@@ -10,6 +10,8 @@ import {
   DEFAULT_TABS
 } from './constants'
 
+await Notification.requestPermission();
+
 export const usePomidorStore = defineStore('timer', () => {
   const activeTab = ref(null)
   const minutes = ref(getMinutes());
@@ -28,6 +30,12 @@ export const usePomidorStore = defineStore('timer', () => {
     isActive.value = true
     interval.value = setInterval(() => {
       seconds.value = seconds.value - 1
+
+      if (seconds.value === 0 && minutes.value === 0) {
+        notify()
+        stopTimer()
+      }
+
       if (seconds.value < 0) {
         seconds.value = 59
         minutes.value = minutes.value - 1
@@ -96,6 +104,13 @@ export const usePomidorStore = defineStore('timer', () => {
   function switchTab({ value }) {
     activeTab.value = value
     resetTimer()
+  }
+
+  function notify() {
+    new Notification('You have finished this pomidor!', {
+      body: 'Have some rest and return! :) '
+    })
+    new Audio('../../public/sound.mp3').play()
   }
 
   return {
