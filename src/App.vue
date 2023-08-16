@@ -1,15 +1,15 @@
 <script setup>
 import TheMain from './components/TheMain.vue';
-import TheGoals from './components/TheGoals.vue';
+import TheGoals from './components/goals/TheGoals.vue';
 </script>
 
 <template>
   <div class="app">
-          <header class="header"></header>
-        <main class="main">
-          <TheMain />
-            <TheGoals />
-        </main>
+      <header class="header"></header>
+      <main class="main">
+        <TheMain />
+        <TheGoals />
+      </main>
     <footer class="footer"></footer>
   </div>
 </template>
