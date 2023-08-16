@@ -22,4 +22,12 @@ const { shownMinutes, shownSeconds } = storeToRefs(store)
   text-align: center;
   padding: 4rem 0;
 }
+
+@media only screen and (max-width: 375px) {
+  .watch {
+    margin: none;
+    font-size: 4rem;
+    width: 100%;
+  }
+}
 </style>

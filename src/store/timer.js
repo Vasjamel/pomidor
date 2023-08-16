@@ -10,7 +10,6 @@ import {
   DEFAULT_TABS
 } from './constants'
 
-await Notification.requestPermission();
 
 export const usePomidorStore = defineStore('timer', () => {
   const activeTab = ref(null)
@@ -26,7 +25,8 @@ export const usePomidorStore = defineStore('timer', () => {
   const shownSeconds = computed(() => seconds.value < 10 ? `0${seconds.value}` : `${seconds.value}`)
   const shownMinutes = computed(() => minutes.value < 10 ? `0${minutes.value}` : `${minutes.value}`)
 
-  function startCountDown() {
+  async function startCountDown() {
+    await getNotificationPermissions()
     isActive.value = true
     interval.value = setInterval(() => {
       seconds.value = seconds.value - 1
@@ -44,13 +44,13 @@ export const usePomidorStore = defineStore('timer', () => {
     hideModal()
   }
 
-  function startTimer() {
+  async function startTimer() {
     if (isActive.value) return;
     const displayModal = activeTab.value === TAB_VALUES.POMIDOR && !isPaused.value
     if (displayModal) {
       openModal()
     } else {
-      startCountDown()
+      await startCountDown()
     }
     isPaused.value = false
   }
@@ -79,7 +79,7 @@ export const usePomidorStore = defineStore('timer', () => {
     showModal.value = false
   }
 
-  function saveGoal(goalText) {
+  async function saveGoal(goalText) {
     const goal = {
       startedAt: new Date(),
       completedAt: null,
@@ -88,7 +88,7 @@ export const usePomidorStore = defineStore('timer', () => {
       pomidors: 0
     }
     goals.value = [...goals.value, goal]
-    startCountDown()
+    await startCountDown()
   }
 
   function getMinutes() {
@@ -110,7 +110,13 @@ export const usePomidorStore = defineStore('timer', () => {
     new Notification('You have finished this pomidor!', {
       body: 'Have some rest and return! :) '
     })
-    new Audio('../../public/sound.mp3').play()
+    new Audio('/sound.mp3').play()
+  }
+
+  async function getNotificationPermissions() {
+    if (Notification.permission !== 'granted') {
+      await Notification.requestPermission();
+    }
   }
 
   return {

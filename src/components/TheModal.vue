@@ -97,4 +97,14 @@ function closeModal() {
     }
   }
 }
+
+@media only screen and (max-width: 375px) {
+  .form {
+    margin: none;
+
+    .form__button {
+      margin: none;
+    }
+  }
+}
 </style>

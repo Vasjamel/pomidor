@@ -27,8 +27,20 @@ const currentGoal = computed(() => goals.value[goals.value?.length - 1])
   margin: 3rem auto;
   padding: 3rem;
   width: 50%;
+  min-width: 400px;
   border: 4px solid rgb(133, 57, 57);
   text-align: center;
   font-size: 2rem;
+}
+
+@media only screen and (max-width: 375px) {
+  .goal {
+    margin: 0;
+    min-width: none;
+    width: auto;
+    padding: 0;
+    border: none;
+    text-align: center;
+  }
 }
 </style>

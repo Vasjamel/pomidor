@@ -45,4 +45,17 @@ onMounted(() => {
   }
 
 }
+
+@media only screen and (max-width: 375px) {
+  .tabs {
+    flex-direction: column;
+    width: 100%;
+    margin: 0 0 2rem 0;
+
+    .tab {
+      width: 100%;
+      padding: 1rem;
+    }
+  }
+}
 </style>

@@ -68,4 +68,10 @@ function resetTimer() {
     }
   }
 }
+
+@media only screen and (max-width: 375px) {
+  .watch-controls {
+    flex-direction: column;
+  }
+}
 </style>
