@@ -12,11 +12,16 @@
 
     </draggable>
     <div class="button__wrapper">
-      <button class="button" type="button">
-        Add
-      </button>
+                          <button class="button" type="button" @click="addNewTask">
+                            Add
+                          </button>
+                        </div>
+                        <div v-if="isCreating" class="form__wrapper">
+                          <form class="form">
+                        <input class="form__input" v-model="newTask" @keydown.enter.prevent="saveTask" />
+                      </form>
+                        </div>
     </div>
-  </div>
 </template>
 
 
@@ -24,6 +29,7 @@
 import { computed, ref } from 'vue'
 import draggable from 'vuedraggable'
 import TheGoal from './TheGoal.vue';
+import { useTasksStore } from '../../store/tasks';
 
 const props = defineProps({
   tasksData: {
@@ -32,13 +38,28 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits([])
+const emit = defineEmits(['add-goal'])
+
+const store = useTasksStore()
 
 const isDragging = ref(false);
+const newTask = ref('');
+const isCreating = ref(false)
 const dragOptions = computed(() => ({ disabled: false, ghostClass: "ghostClass", animation: 200 }))
 
 function log(e) {
   console.log('event ', e)
+}
+
+function addNewTask() {
+  console.log('addNewTask', props.tasksData.label, isCreating.value)
+  isCreating.value = !isCreating.value
+}
+
+function saveTask() {
+  console.log('saveTask', newTask.value)
+  store.addTask(newTask.value, props.tasksData.label)
+  newTask.value = ''
 }
 
 </script>
@@ -67,6 +88,13 @@ function log(e) {
   width: 100%;
   padding: 1rem;
   background-color: rebeccapurple;
+}
+
+.form__wrapper {
+}
+.form {
+}
+.form__input {
 }
 </style>
 

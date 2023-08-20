@@ -3,6 +3,10 @@ import { reactive, computed, watch } from "vue";
 
 import { v4 as uuid } from 'uuid'
 
+function toCamelCase(str) {
+  return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+}
+
 export const useTasksStore = defineStore('tasks', () => {
   const rawTasks = reactive({
     planned: [
@@ -40,7 +44,12 @@ export const useTasksStore = defineStore('tasks', () => {
 
   watch(tasks, (newVal) => { console.log('watch tasks', newVal) }, { deep: true, immediate: true })
 
+  function addTask(task, groupName) {
+    const group = toCamelCase(groupName)
+    rawTasks[group].push({ label: task, id: uuid(), details: '', responsible: 'me', deadline: new Date() })
+  }
   return {
-    tasks
+    tasks,
+    addTask
   }
 })
